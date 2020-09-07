@@ -37,7 +37,7 @@ namespace COVID_19_TemperatureScan
         }
 
         /// <summary>
-        /// Сохраняет изображение в PictureBox.
+        /// Сохраняет изображение из PictureBox.
         /// </summary>
         /// <param name="pictureBox">PictureBox</param>
         void ImageSave(PictureBox pictureBox)
@@ -71,7 +71,7 @@ namespace COVID_19_TemperatureScan
         }
 
         /// <summary>
-        /// Загружает изображение в PictureBox и переменную.
+        /// Загружает изображение в PictureBox.
         /// </summary>
         /// <param name="image">Переменная изображения</param>
         /// <param name="pictureBox">PictureBox</param>
