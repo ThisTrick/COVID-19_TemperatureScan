@@ -3,15 +3,23 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Emgu.CV;
+using Emgu;
+using Emgu.CV.Structure;
 
 namespace COVID_19_TemperatureScan
 {
     public partial class MainForm : Form
     {
+        Image<Bgr, byte> imgRgb;
+        Image<Bgr, byte> imgTemp;
+        Image<Bgr, byte> imgResult;
+
         public MainForm()
         {
             InitializeComponent();
@@ -28,12 +36,12 @@ namespace COVID_19_TemperatureScan
 
         private void pbRgb_DoubleClick(object sender, EventArgs e)
         {
-            ImageLoad(pbRgb);
+            imgRgb = ImageLoad(pbRgb);
         }
 
         private void pbTemp_DoubleClick(object sender, EventArgs e)
         {
-            ImageLoad(pbTemp);
+           imgTemp = ImageLoad(pbTemp);
         }
 
         /// <summary>
@@ -75,7 +83,7 @@ namespace COVID_19_TemperatureScan
         /// </summary>
         /// <param name="image">Переменная изображения</param>
         /// <param name="pictureBox">PictureBox</param>
-        Bitmap ImageLoad(PictureBox pictureBox)
+        Image<Bgr, byte> ImageLoad(PictureBox pictureBox)
         {
             //создание диалогового окна "Открыть изображение", для сохранения изображения
             OpenFileDialog openDialog = new OpenFileDialog();
@@ -95,10 +103,10 @@ namespace COVID_19_TemperatureScan
                     //Получаем путь к файлу
                     var path = openDialog.FileName;
                     //Получаем изображение 
-                    var image = new Bitmap(path);
+                    var img = new Image<Bgr, byte>(path);
                     //Загружаем изображение в PictureBox
-                    pictureBox.Image = image;
-                    return image;
+                    pictureBox.Image = img.ToBitmap() ;
+                    return img;
                 }
                 catch
                 {
@@ -107,6 +115,37 @@ namespace COVID_19_TemperatureScan
                 }
             }
             return null;
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            DetectFace();
+        }
+        private void DetectFace()
+        {
+            try
+            {
+                if (imgRgb == null)
+                {
+                    return;
+                }
+                var pathFaceData = Path.GetFullPath(@"../../data/haarcascade_frontalface_default.xml");
+
+                var classifier = new CascadeClassifier(pathFaceData);
+                var imgGray = imgRgb.Convert<Gray, byte>().Clone();
+                Rectangle[] faces = classifier.DetectMultiScale(imgGray, 1.1, 4);
+
+                imgResult = imgRgb.Clone();
+                foreach (var face in faces)
+                {
+                    imgResult.Draw(face, new Bgr(255, 0, 0), 2);
+                }
+                pbResult.Image = imgResult.ToBitmap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

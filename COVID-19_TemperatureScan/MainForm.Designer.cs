@@ -51,20 +51,24 @@
             // 
             // pbTemp
             // 
+            this.pbTemp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbTemp.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbTemp.Location = new System.Drawing.Point(0, 249);
             this.pbTemp.Name = "pbTemp";
             this.pbTemp.Size = new System.Drawing.Size(272, 242);
+            this.pbTemp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbTemp.TabIndex = 1;
             this.pbTemp.TabStop = false;
             this.pbTemp.DoubleClick += new System.EventHandler(this.pbTemp_DoubleClick);
             // 
             // pbRgb
             // 
+            this.pbRgb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbRgb.Dock = System.Windows.Forms.DockStyle.Top;
             this.pbRgb.Location = new System.Drawing.Point(0, 0);
             this.pbRgb.Name = "pbRgb";
             this.pbRgb.Size = new System.Drawing.Size(272, 249);
+            this.pbRgb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbRgb.TabIndex = 1;
             this.pbRgb.TabStop = false;
             this.pbRgb.DoubleClick += new System.EventHandler(this.pbRgb_DoubleClick);
@@ -81,13 +85,16 @@
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = false;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // pbResult
             // 
+            this.pbResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbResult.Location = new System.Drawing.Point(272, 0);
             this.pbResult.Name = "pbResult";
             this.pbResult.Size = new System.Drawing.Size(465, 435);
+            this.pbResult.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbResult.TabIndex = 2;
             this.pbResult.TabStop = false;
             this.pbResult.DoubleClick += new System.EventHandler(this.pbResult_DoubleClick);
