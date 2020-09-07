@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COVID-19_TemperatureScan", "COVID-19_TemperatureScan\COVID-19_TemperatureScan.csproj", "{BB19B23E-AEEA-4C2C-B1C4-67CA17CD7692}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB19B23E-AEEA-4C2C-B1C4-67CA17CD7692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB19B23E-AEEA-4C2C-B1C4-67CA17CD7692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB19B23E-AEEA-4C2C-B1C4-67CA17CD7692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB19B23E-AEEA-4C2C-B1C4-67CA17CD7692}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {20AF5267-A435-44EB-98EE-B918AF4E9215}
+	EndGlobalSection
+EndGlobal
