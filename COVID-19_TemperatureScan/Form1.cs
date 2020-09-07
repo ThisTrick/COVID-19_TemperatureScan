@@ -10,11 +10,28 @@ using System.Windows.Forms;
 
 namespace COVID_19_TemperatureScan
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
+
+        private void pbResult_DoubleClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pbRgb_DoubleClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pbTemp_DoubleClick(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }
