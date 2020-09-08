@@ -120,22 +120,29 @@ namespace COVID_19_TemperatureScan
         private void btnStart_Click(object sender, EventArgs e)
         {
 
-            var imgGray = imgRgb.Clone().Convert<Gray, byte>();
+            var imgGray = imgRgb?.Clone().Convert<Gray, byte>();
             var face = FaceDetect(imgGray);
 
             imgResult = imgTemp?.Clone();
-            imgResult?.Draw(face, new Bgr(255, 10, 10), 3);
+
+            if (imgResult == null)
+            {
+                return;
+            }
+            imgResult.Draw(face, new Bgr(179, 143, 247), 3);
 
             var eyes = EyesDetect(imgGray, face);
 
             for (int i = 0; i < 2; i++)
             {
                 eyes[i].X += face.X;
-                eyes[i].Y += face.Y;
-                imgResult?.Draw(eyes[i], new Bgr(0, 0, 200), 2);
+                eyes[i].Y += face.Y; 
+                imgResult.Draw(eyes[i], new Bgr(144, 75, 87), 2);
             }
 
-            pbResult.Image = imgResult?.ToBitmap();
+            var tempSpase = TempSpace(eyes); 
+            imgResult.Draw(tempSpase, new Bgr(255, 255, 255), 2);
+            pbResult.Image = imgResult.ToBitmap();
         }
 
         private Rectangle FaceDetect(Image<Gray, byte> imgGray)
@@ -186,5 +193,19 @@ namespace COVID_19_TemperatureScan
             return eyes;
         }
 
+        private Rectangle TempSpace(Rectangle[] eyesRect)
+        {
+            if (eyesRect.Length < 1 || eyesRect[0] == null)
+            {
+                return new Rectangle();
+            }
+            var eye = eyesRect[1];
+            var w = eye.Width / 4;
+            var h = eye.Height / 4;
+            var x = eye.X + eye.Width - w;
+            var y = eye.Y + eye.Height - (int)Math.Round(1.7*h);
+
+            return new Rectangle(x, y, w, h);
+        }
     }
 }
