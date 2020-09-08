@@ -24,7 +24,7 @@ namespace COVID_19_TemperatureScan
         {
             InitializeComponent();
         }
-
+        #region Save and Load Image
         private void pbResult_DoubleClick(object sender, EventArgs e)
         {
             if (pbResult.Image == null)
@@ -116,36 +116,75 @@ namespace COVID_19_TemperatureScan
             }
             return null;
         }
-
+        #endregion
         private void btnStart_Click(object sender, EventArgs e)
         {
-            DetectFace();
+
+            var imgGray = imgRgb.Clone().Convert<Gray, byte>();
+            var face = FaceDetect(imgGray);
+
+            imgResult = imgTemp?.Clone();
+            imgResult?.Draw(face, new Bgr(255, 10, 10), 3);
+
+            var eyes = EyesDetect(imgGray, face);
+
+            for (int i = 0; i < 2; i++)
+            {
+                eyes[i].X += face.X;
+                eyes[i].Y += face.Y;
+                imgResult?.Draw(eyes[i], new Bgr(0, 0, 200), 2);
+            }
+
+            pbResult.Image = imgResult?.ToBitmap();
         }
-        private void DetectFace()
+
+        private Rectangle FaceDetect(Image<Gray, byte> imgGray)
         {
-            try
+            var pathFaceData = Path.GetFullPath(@"../../data/haarcascade_frontalface_default.xml");
+            if (!File.Exists(pathFaceData) || imgGray == null)
             {
-                if (imgRgb == null)
-                {
-                    return;
-                }
-                var pathFaceData = Path.GetFullPath(@"../../data/haarcascade_frontalface_default.xml");
-
-                var classifier = new CascadeClassifier(pathFaceData);
-                var imgGray = imgRgb.Convert<Gray, byte>().Clone();
-                Rectangle[] faces = classifier.DetectMultiScale(imgGray, 1.1, 4);
-
-                imgResult = imgRgb.Clone();
-                foreach (var face in faces)
-                {
-                    imgResult.Draw(face, new Bgr(255, 0, 0), 2);
-                }
-                pbResult.Image = imgResult.ToBitmap();
+                return new Rectangle();
             }
-            catch (Exception ex)
+
+            var faceClassifier = new CascadeClassifier(pathFaceData);
+            var faces = faceClassifier.DetectMultiScale(imgGray, 1.1, 4);
+
+            if (faces.Length < 1 || faces[0] == null)
             {
-                MessageBox.Show(ex.Message);
+                return new Rectangle();
             }
+
+            return faces[0];
         }
+        private Rectangle[] EyesDetect(Image<Gray, byte> imgGray, Rectangle faceRect)
+        {
+            var pathEyeData = Path.GetFullPath(@"../../data/haarcascade_lefteye_2splits.xml");
+            if (!File.Exists(pathEyeData) || imgGray == null || faceRect == null)
+            {
+                return new Rectangle[2] { new Rectangle(), new Rectangle()};
+            }
+
+            imgGray.ROI = faceRect;
+            var eyeClassifier = new CascadeClassifier(pathEyeData);
+            var eyes = eyeClassifier.DetectMultiScale(imgGray, 1.1, 4);
+            if (eyes.Length < 1 || (eyes[0] == null && eyes[1] == null))
+            {
+                return new Rectangle[2] { new Rectangle(), new Rectangle() };
+            }
+            if (eyes[1] == null && eyes[0] != null)
+            {
+                return new Rectangle[2] { eyes[0], new Rectangle() };
+            }
+            if (eyes[0] == null && eyes[1] != null)
+            {
+                return new Rectangle[2] { new Rectangle(), eyes[1] };
+            }
+            if (eyes.Length > 2)
+            {
+                return new Rectangle[2] { eyes[0], eyes[1] };
+            }
+            return eyes;
+        }
+
     }
 }
