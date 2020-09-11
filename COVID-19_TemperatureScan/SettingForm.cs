@@ -28,13 +28,15 @@ namespace COVID_19_TemperatureScan
 
             this.DialogResult = DialogResult.Abort;
 
-            if (tempStart == 0 || tempFinish == 0)
-            {
-                MessageBox.Show("Temperature shouldn't be 0");
-                return;
-            }
+            //if (tempStart == 0 || tempFinish == 0)
+            //{
+            //    MessageBox.Show("Temperature shouldn't be 0");
+            //    return;
+            //}
             confCollection["TempStart"].Value = ((int)tempStart).ToString();
             confCollection["TempFinish"].Value = ((int)tempFinish).ToString();
+            configManager.Save();
+            ConfigurationManager.RefreshSection("appSettings");
             this.DialogResult = DialogResult.OK;
         }
     }
