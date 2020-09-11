@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu;
 using Emgu.CV.Structure;
+using Multispectral_Image_Integration_Library;
 
 namespace COVID_19_TemperatureScan
 {
@@ -119,7 +120,7 @@ namespace COVID_19_TemperatureScan
         #endregion
         private void btnStart_Click(object sender, EventArgs e)
         {
-
+            ///TODO: Refactoring 
             var imgGray = imgRgb?.Clone().Convert<Gray, byte>();
             var face = FaceDetect(imgGray);
 

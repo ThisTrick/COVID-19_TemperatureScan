@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COVID-19_TemperatureScan", "COVID-19_TemperatureScan\COVID-19_TemperatureScan.csproj", "{BB19B23E-AEEA-4C2C-B1C4-67CA17CD7692}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multispectral_Image_Integration_Library", "Multispectral_Image_Integration_Library\Multispectral_Image_Integration_Library.csproj", "{D4DEF40C-B5F1-4A8D-ADC7-7AA9CF6AC9E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BB19B23E-AEEA-4C2C-B1C4-67CA17CD7692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB19B23E-AEEA-4C2C-B1C4-67CA17CD7692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB19B23E-AEEA-4C2C-B1C4-67CA17CD7692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4DEF40C-B5F1-4A8D-ADC7-7AA9CF6AC9E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4DEF40C-B5F1-4A8D-ADC7-7AA9CF6AC9E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4DEF40C-B5F1-4A8D-ADC7-7AA9CF6AC9E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4DEF40C-B5F1-4A8D-ADC7-7AA9CF6AC9E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
