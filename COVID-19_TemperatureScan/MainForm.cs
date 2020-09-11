@@ -153,7 +153,9 @@ namespace COVID_19_TemperatureScan
             var imgGray = imgRgb?.Clone().Convert<Gray, byte>();
             var face = FaceDetect(imgGray);
 
-            imgResult = imgTemp?.Clone();
+            var imgFusionMethod = GetFusionMethod(Mode);
+            var imgFusion = imgFusionMethod.Fusion(new FastBitmap(imgRgb.ToBitmap()), new FastBitmap(imgTemp.ToBitmap()));
+            imgResult = new Image<Bgr, byte>(imgFusion.Bitmap);
 
             if (imgResult == null)
             {
@@ -170,9 +172,11 @@ namespace COVID_19_TemperatureScan
                 imgResult.Draw(eyes[i], new Bgr(144, 75, 87), 2);
             }
 
-            var tempSpase = TempSpace(eyes); 
-            imgResult.Draw(tempSpase, new Bgr(255, 255, 255), 2);
+            var tempSpace = TempSpace(eyes); 
+            imgResult.Draw(tempSpace, new Bgr(255, 255, 255), 2);
+            var temp = TempCalc(tempSpace, imgTemp.Clone().Convert<Gray, byte>());
             pbResult.Image = imgResult.ToBitmap();
+            MessageBox.Show(temp.ToString());
         }
 
         private Rectangle FaceDetect(Image<Gray, byte> imgGray)
@@ -200,7 +204,6 @@ namespace COVID_19_TemperatureScan
             {
                 return new Rectangle[2] { new Rectangle(), new Rectangle()};
             }
-
             imgGray.ROI = faceRect;
             var eyeClassifier = new CascadeClassifier(pathEyeData);
             var eyes = eyeClassifier.DetectMultiScale(imgGray, 1.1, 4);
@@ -235,6 +238,20 @@ namespace COVID_19_TemperatureScan
             var y = eye.Y + eye.Height - (int)Math.Round(1.7*h);
 
             return new Rectangle(x, y, w, h);
+        }
+        private double TempCalc(Rectangle tempSpace, Image<Gray, byte> imgGray)
+        {
+            int sum = 0;
+            int count = 0;
+            for (int x = tempSpace.X; x < tempSpace.Width + tempSpace.X; x++)
+            {
+                for (int y = tempSpace.Y; y < tempSpace.Height + tempSpace.Y; y++)
+                {
+                    sum += imgGray.Data[x, y, 0];
+                    count++;
+                }
+            }
+            return sum / count;
         }
         private IImageFusion GetFusionMethod(string mode)
         {
