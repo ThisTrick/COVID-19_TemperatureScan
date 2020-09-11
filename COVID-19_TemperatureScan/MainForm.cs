@@ -12,6 +12,7 @@ using Emgu.CV;
 using Emgu;
 using Emgu.CV.Structure;
 using Multispectral_Image_Integration_Library;
+using System.Configuration;
 
 namespace COVID_19_TemperatureScan
 {
@@ -20,6 +21,10 @@ namespace COVID_19_TemperatureScan
         Image<Bgr, byte> imgRgb;
         Image<Bgr, byte> imgTemp;
         Image<Bgr, byte> imgResult;
+
+        string Mode;
+        int TempStart;
+        int TempFinish;
 
         public MainForm()
         {
@@ -36,7 +41,19 @@ namespace COVID_19_TemperatureScan
         }
         private void ContextMenuStripItem_Click(object sender, EventArgs e)
         {
-            //
+            ///TODO: Refactoring 
+            var setting = new SettingForm();
+            var dialogResult = setting.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                var configManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var confCollection = configManager.AppSettings.Settings;
+
+                Mode = confCollection["Mode"].Value;
+                TempStart = int.Parse(confCollection["TempStart"].Value);
+                TempFinish = int.Parse(confCollection["TempFinish"].Value);
+            }
+            
         }
         #region Save and Load Image
         private void pbResult_DoubleClick(object sender, EventArgs e)
