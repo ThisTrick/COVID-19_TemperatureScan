@@ -27,6 +27,8 @@ namespace COVID_19_TemperatureScan
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
+            this.Icon = Properties.Resources.icon;
+
             this.ContextMenuStrip = new ContextMenuStrip();
             var textButton = "Setting";
             this.ContextMenuStrip.Items.Add(textButton, Properties.Resources.Setting,
@@ -34,7 +36,7 @@ namespace COVID_19_TemperatureScan
         }
         private void ContextMenuStripItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Test");
+            //
         }
         #region Save and Load Image
         private void pbResult_DoubleClick(object sender, EventArgs e)

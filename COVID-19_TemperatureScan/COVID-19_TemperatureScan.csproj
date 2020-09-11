@@ -113,6 +113,7 @@
     <Content Include="data\haarcascade_frontalface_default.xml" />
     <Content Include="data\haarcascade_lefteye_2splits.xml" />
     <Content Include="License-LGPL.txt" />
+    <None Include="Resources\icons8_unicorn.ico" />
     <None Include="Resources\icons8_settings_25px_1.png" />
   </ItemGroup>
   <ItemGroup>
