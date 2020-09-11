@@ -25,6 +25,17 @@ namespace COVID_19_TemperatureScan
         {
             InitializeComponent();
         }
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            this.ContextMenuStrip = new ContextMenuStrip();
+            var textButton = "Setting";
+            this.ContextMenuStrip.Items.Add(textButton, Properties.Resources.Setting,
+                                            ContextMenuStripItem_Click);
+        }
+        private void ContextMenuStripItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Test");
+        }
         #region Save and Load Image
         private void pbResult_DoubleClick(object sender, EventArgs e)
         {
@@ -208,5 +219,7 @@ namespace COVID_19_TemperatureScan
 
             return new Rectangle(x, y, w, h);
         }
+
+
     }
 }
