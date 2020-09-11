@@ -12,6 +12,7 @@ using Emgu.CV;
 using Emgu;
 using Emgu.CV.Structure;
 using Multispectral_Image_Integration_Library;
+using System.Configuration;
 
 namespace COVID_19_TemperatureScan
 {
@@ -21,9 +22,37 @@ namespace COVID_19_TemperatureScan
         Image<Bgr, byte> imgTemp;
         Image<Bgr, byte> imgResult;
 
+        string Mode;
+        int TempStart;
+        int TempFinish;
+
         public MainForm()
         {
             InitializeComponent();
+        }
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            this.Icon = Properties.Resources.icon;
+
+            this.ContextMenuStrip = new ContextMenuStrip();
+            var textButton = "Setting";
+            this.ContextMenuStrip.Items.Add(textButton, Properties.Resources.Setting,
+                                            ContextMenuStripItem_Click);
+        }
+        private void ContextMenuStripItem_Click(object sender, EventArgs e)
+        {
+            ///TODO: Refactoring 
+            var setting = new SettingForm();
+            var dialogResult = setting.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                var configManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var confCollection = configManager.AppSettings.Settings;
+
+                Mode = confCollection["Mode"].Value;
+                TempStart = int.Parse(confCollection["TempStart"].Value);
+                TempFinish = int.Parse(confCollection["TempFinish"].Value);
+            }
         }
         #region Save and Load Image
         private void pbResult_DoubleClick(object sender, EventArgs e)
@@ -193,7 +222,6 @@ namespace COVID_19_TemperatureScan
             }
             return eyes;
         }
-
         private Rectangle TempSpace(Rectangle[] eyesRect)
         {
             if (eyesRect.Length < 1 || eyesRect[0] == null)
@@ -208,5 +236,22 @@ namespace COVID_19_TemperatureScan
 
             return new Rectangle(x, y, w, h);
         }
+        private IImageFusion GetFusionMethod(string mode)
+        {
+            if (mode == "Maximum Method")
+            {
+                return new MaximumMethodFusion();
+            }
+            if (mode == "Interlacing Method")
+            {
+                return new InterlacingMethodFusion();
+            }
+            if (mode == "Interlacing Maximum Method")
+            {
+                return new InterlacingMaximumMethodFusion();
+            }
+            return new AveragingMethodFusion();
+        }
+
     }
 }

@@ -46,7 +46,7 @@
             this.pInputs.Dock = System.Windows.Forms.DockStyle.Left;
             this.pInputs.Location = new System.Drawing.Point(0, 0);
             this.pInputs.Name = "pInputs";
-            this.pInputs.Size = new System.Drawing.Size(272, 491);
+            this.pInputs.Size = new System.Drawing.Size(272, 523);
             this.pInputs.TabIndex = 0;
             // 
             // pbTemp
@@ -55,7 +55,7 @@
             this.pbTemp.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbTemp.Location = new System.Drawing.Point(0, 249);
             this.pbTemp.Name = "pbTemp";
-            this.pbTemp.Size = new System.Drawing.Size(272, 242);
+            this.pbTemp.Size = new System.Drawing.Size(272, 274);
             this.pbTemp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbTemp.TabIndex = 1;
             this.pbTemp.TabStop = false;
@@ -79,9 +79,9 @@
             this.btnStart.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStart.Font = new System.Drawing.Font("Rockwell", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(272, 435);
+            this.btnStart.Location = new System.Drawing.Point(272, 467);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(465, 56);
+            this.btnStart.Size = new System.Drawing.Size(494, 56);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = false;
@@ -93,7 +93,7 @@
             this.pbResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbResult.Location = new System.Drawing.Point(272, 0);
             this.pbResult.Name = "pbResult";
-            this.pbResult.Size = new System.Drawing.Size(465, 435);
+            this.pbResult.Size = new System.Drawing.Size(494, 467);
             this.pbResult.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbResult.TabIndex = 2;
             this.pbResult.TabStop = false;
@@ -103,12 +103,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(737, 491);
+            this.ClientSize = new System.Drawing.Size(766, 523);
             this.Controls.Add(this.pbResult);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.pInputs);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainForm";
             this.Text = "COVID-19_TemperatureScan";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.pInputs.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbTemp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbRgb)).EndInit();

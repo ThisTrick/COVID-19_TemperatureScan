@@ -153,7 +153,7 @@ namespace Multispectral_Image_Integration_Library
         /// Создает копию объекта с типом Object
         /// </summary>
         /// <returns></returns>
-        private object ICloneable.Clone()
+        object ICloneable.Clone()
         {
             return this.Clone();
         }
