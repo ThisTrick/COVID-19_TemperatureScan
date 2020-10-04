@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Emgu.CV;
-using Emgu;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using Multispectral_Image_Integration_Library;
+using System;
 using System.Configuration;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace COVID_19_TemperatureScan
 {
@@ -25,6 +18,7 @@ namespace COVID_19_TemperatureScan
         string Mode;
         int TempStart;
         int TempFinish;
+        private int Temp;
 
         public MainForm()
         {
@@ -71,7 +65,7 @@ namespace COVID_19_TemperatureScan
 
         private void pbTemp_DoubleClick(object sender, EventArgs e)
         {
-           imgTemp = ImageLoad(pbTemp);
+            imgTemp = ImageLoad(pbTemp);
         }
 
         /// <summary>
@@ -135,7 +129,7 @@ namespace COVID_19_TemperatureScan
                     //Получаем изображение 
                     var img = new Image<Bgr, byte>(path);
                     //Загружаем изображение в PictureBox
-                    pictureBox.Image = img.ToBitmap() ;
+                    pictureBox.Image = img.ToBitmap();
                     return img;
                 }
                 catch
@@ -168,15 +162,14 @@ namespace COVID_19_TemperatureScan
             for (int i = 0; i < 2; i++)
             {
                 eyes[i].X += face.X;
-                eyes[i].Y += face.Y; 
+                eyes[i].Y += face.Y;
                 imgResult.Draw(eyes[i], new Bgr(144, 75, 87), 2);
             }
 
-            var tempSpace = TempSpace(eyes); 
+            var tempSpace = TempSpaceDetect(eyes);
             imgResult.Draw(tempSpace, new Bgr(255, 255, 255), 2);
-            var temp = TempCalc(tempSpace, imgTemp.Clone().Convert<Gray, byte>());
+            Temp = TempIntencityCalc(tempSpace, imgTemp.Clone().Convert<Gray, byte>());
             pbResult.Image = imgResult.ToBitmap();
-            MessageBox.Show(temp.ToString());
         }
 
         private Rectangle FaceDetect(Image<Gray, byte> imgGray)
@@ -202,7 +195,7 @@ namespace COVID_19_TemperatureScan
             var pathEyeData = Path.GetFullPath(@"../../data/haarcascade_lefteye_2splits.xml");
             if (!File.Exists(pathEyeData) || imgGray == null || faceRect == null)
             {
-                return new Rectangle[2] { new Rectangle(), new Rectangle()};
+                return new Rectangle[2] { new Rectangle(), new Rectangle() };
             }
             imgGray.ROI = faceRect;
             var eyeClassifier = new CascadeClassifier(pathEyeData);
@@ -225,7 +218,7 @@ namespace COVID_19_TemperatureScan
             }
             return eyes;
         }
-        private Rectangle TempSpace(Rectangle[] eyesRect)
+        private Rectangle TempSpaceDetect(Rectangle[] eyesRect)
         {
             if (eyesRect.Length < 1 || eyesRect[0] == null)
             {
@@ -235,11 +228,11 @@ namespace COVID_19_TemperatureScan
             var w = eye.Width / 4;
             var h = eye.Height / 4;
             var x = eye.X + eye.Width - w;
-            var y = eye.Y + eye.Height - (int)Math.Round(1.7*h);
+            var y = eye.Y + eye.Height - (int)Math.Round(1.7 * h);
 
             return new Rectangle(x, y, w, h);
         }
-        private double TempCalc(Rectangle tempSpace, Image<Gray, byte> imgGray)
+        private int TempIntencityCalc(Rectangle tempSpace, Image<Gray, byte> imgGray)
         {
             int sum = 0;
             int count = 0;
@@ -251,10 +244,15 @@ namespace COVID_19_TemperatureScan
                     count++;
                 }
             }
-            return sum / count;
+            double intencityDouble = sum / count;
+            return (int)Math.Round(intencityDouble);
         }
         private IImageFusion GetFusionMethod(string mode)
         {
+            if (mode == "Threshold Method")
+            {
+                return new ThresholdMethodFusion(Temp);
+            }
             if (mode == "Maximum Method")
             {
                 return new MaximumMethodFusion();
@@ -268,6 +266,18 @@ namespace COVID_19_TemperatureScan
                 return new InterlacingMaximumMethodFusion();
             }
             return new AveragingMethodFusion();
+        }
+        private double[] GetTempBetween(double tempStart, double tempFinish)
+        {
+            var tempBetween = new double[256];
+            var step = tempBetween.Length / (Math.Abs(tempStart) + Math.Abs(tempFinish));
+            tempBetween[0] = tempStart;
+            tempBetween[tempBetween.Length - 1] = tempFinish;
+            for (int i = 1; i < tempBetween.Length - 1; i++)
+            {
+                tempBetween[i] = tempStart + (step * i);
+            }
+            return tempBetween;
         }
 
     }
