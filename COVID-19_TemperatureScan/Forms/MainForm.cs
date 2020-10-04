@@ -11,14 +11,16 @@ namespace COVID_19_TemperatureScan
 {
     public partial class MainForm : Form
     {
-        Image<Bgr, byte> imgRgb;
-        Image<Bgr, byte> imgTemp;
-        Image<Bgr, byte> imgResult;
+        private Image<Bgr, byte> imgRgb;
+        private Image<Bgr, byte> imgTemp;
+        private Image<Bgr, byte> imgResult;
 
-        string Mode;
-        int TempStart;
-        int TempFinish;
-        private int Temp;
+        private string Mode;
+        private int TempStart = -40;
+        private int TempFinish = 60;
+        private int TempIntensity;
+
+        private string Title = "COVID-19_TemperatureScan";
 
         public MainForm()
         {
@@ -85,6 +87,8 @@ namespace COVID_19_TemperatureScan
             ImageFusion(tempSpace);
 
             ImageDraw(face, eyes, tempSpace);
+
+            TempCalc();
 
             pbResult.Image = imgResult.ToBitmap();
         }
@@ -180,14 +184,13 @@ namespace COVID_19_TemperatureScan
         }
         #endregion
 
-
         #region Image Fusion
 
         private IImageFusion GetFusionMethod(string mode)
         {
             if (mode == "Threshold Method")
             {
-                return new ThresholdMethodFusion(Temp);
+                return new ThresholdMethodFusion(TempIntensity);
             }
             if (mode == "Maximum Method")
             {
@@ -206,10 +209,7 @@ namespace COVID_19_TemperatureScan
 
         private void ImageFusion(Rectangle tempSpace)
         {
-            if (Mode == "Threshold Method")
-            {
-                Temp = TempIntencityCalc(tempSpace, imgTemp.Clone().Convert<Gray, byte>());
-            }
+            TempIntensity = TempIntencityCalc(tempSpace, imgTemp.Clone().Convert<Gray, byte>());
             var imgFusionMethod = GetFusionMethod(Mode);
             var imgFusion = imgFusionMethod.Fusion(new FastBitmap(imgRgb.ToBitmap()), new FastBitmap(imgTemp.ToBitmap()));
             imgResult = new Image<Bgr, byte>(imgFusion.Bitmap);
@@ -282,6 +282,13 @@ namespace COVID_19_TemperatureScan
         #endregion
 
         #region TempCalc
+        private void TempCalc()
+        {
+            var tempBetween = GetTempBetween(TempStart, TempFinish);
+            var temp = tempBetween[TempIntensity];
+            this.Text = Title + "    " + $"|Tempature: {temp}°C|";
+        }
+
         /// <summary>
         /// Считает среднюю интенсивность в области для определения тепрературы
         /// </summary>
@@ -313,7 +320,7 @@ namespace COVID_19_TemperatureScan
         private double[] GetTempBetween(double tempStart, double tempFinish)
         {
             var tempBetween = new double[256];
-            var step = tempBetween.Length / (Math.Abs(tempStart) + Math.Abs(tempFinish));
+            var step = (Math.Abs(tempStart) + Math.Abs(tempFinish)) / tempBetween.Length;
             tempBetween[0] = tempStart;
             tempBetween[tempBetween.Length - 1] = tempFinish;
             for (int i = 1; i < tempBetween.Length - 1; i++)
