@@ -19,7 +19,8 @@ namespace COVID_19_TemperatureScan
 
             if (string.IsNullOrEmpty(mode))
             {
-                MessageBox.Show("Mode shouldn't be Null");
+                MessageBox.Show("Mode shouldn't be Null", "Error",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             var configManager = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -28,11 +29,13 @@ namespace COVID_19_TemperatureScan
 
             this.DialogResult = DialogResult.Abort;
 
-            //if (tempStart == 0 || tempFinish == 0)
-            //{
-            //    MessageBox.Show("Temperature shouldn't be 0");
-            //    return;
-            //}
+            if (tempStart >= tempFinish)
+            {
+                MessageBox.Show("The end temperature cannot be greater than or equal to the start temperature.", "Error", 
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
             confCollection["TempStart"].Value = ((int)tempStart).ToString();
             confCollection["TempFinish"].Value = ((int)tempFinish).ToString();
             configManager.Save();

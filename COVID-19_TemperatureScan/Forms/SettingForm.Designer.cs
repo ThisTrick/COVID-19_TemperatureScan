@@ -47,9 +47,10 @@
             "Averaging Method",
             "Maximum Method",
             "Interlacing Method",
-            "Interlacing Maximum Method"});
+            "Interlacing Maximum Method",
+            "Threshold Method"});
             this.cmbMode.Location = new System.Drawing.Point(62, 94);
-            this.cmbMode.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cmbMode.Margin = new System.Windows.Forms.Padding(6);
             this.cmbMode.Name = "cmbMode";
             this.cmbMode.Size = new System.Drawing.Size(250, 41);
             this.cmbMode.TabIndex = 0;
@@ -57,7 +58,7 @@
             // numStart
             // 
             this.numStart.Location = new System.Drawing.Point(87, 195);
-            this.numStart.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.numStart.Margin = new System.Windows.Forms.Padding(6);
             this.numStart.Maximum = new decimal(new int[] {
             200,
             0,
@@ -77,7 +78,7 @@
             this.bSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.bSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bSave.Location = new System.Drawing.Point(89, 306);
-            this.bSave.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.bSave.Margin = new System.Windows.Forms.Padding(6);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(179, 57);
             this.bSave.TabIndex = 3;
@@ -154,7 +155,7 @@
             this.Controls.Add(this.cmbMode);
             this.Font = new System.Drawing.Font("Rockwell", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximumSize = new System.Drawing.Size(390, 445);
             this.MinimumSize = new System.Drawing.Size(390, 445);
             this.Name = "SettingForm";
